@@ -164,3 +164,144 @@ TextShadow.Parent = TopHintLabel
 TextShadow.Color = Color3.fromRGB(0, 0, 0)
 TextShadow.Thickness = 1.5
 TextShadow.Transparency = 0.5
+-- ==========================================
+-- ЧАСТЬ 2: БЕЗОПАСНАЯ ЛОГИКА (ОБХОД АНТИЧИТА)
+-- ==========================================
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local enabled = false
+local scriptRunning = true
+local currentLang = "EN"
+local afkThread = nil -- Поток для безопасного таймера
+
+local localization = {
+    EN = {
+        unload = "Unload Script",
+        hint = "Press G to open menu",
+        statusActive = "Status: ACTIVE",
+        statusInactive = "Status: INACTIVE"
+    },
+    RU = {
+        unload = "Выгрузить чит",
+        hint = "Нажмите на G, чтобы открыть меню",
+        statusActive = "Статус: АКТИВЕН",
+        statusInactive = "Статус: НЕАКТИВЕН"
+    }
+}
+
+local function updateTexts()
+    local langData = localization[currentLang]
+    UnloadButton.Text = langData.unload
+    TopHintLabel.Text = langData.hint
+    if enabled then
+        ToggleButton.Text = langData.statusActive
+    else
+        ToggleButton.Text = langData.statusInactive
+    end
+end
+
+-- Анимация отклика кнопок при нажатии
+local function playClickAnimation(button)
+    local originalSize = button.Size
+    button:TweenSize(UDim2.new(originalSize.X.Scale, originalSize.X.Offset - 6, originalSize.Y.Scale, originalSize.Y.Offset - 4), "Out", "Quad", 0.05, true)
+    task.wait(0.05)
+    button:TweenSize(originalSize, "Out", "Quad", 0.05, true)
+end
+
+-- Переключение языковой панели
+LangButton.MouseButton1Click:Connect(function()
+    currentLang = (currentLang == "EN") and "RU" or "EN"
+    LangButton.Text = currentLang
+    updateTexts()
+end)
+
+-- Плавный RGB эффект текста подсказки
+local rgbConnection
+rgbConnection = RunService.RenderStepped:Connect(function()
+    if not scriptRunning then rgbConnection:Disconnect() return end
+    if TopHintLabel.Visible then
+        local hue = (tick() % 5) / 5
+        TopHintLabel.TextColor3 = Color3.fromHSV(hue, 0.75, 1)
+    end
+end)
+
+-- СВЕРХБЕЗОПАСНЫЙ МЕТОД ОБХОДА (Имитация реального движения)
+-- Скрипт раз в пару минут делает микро-шаг, что гарантированно сбрасывает АФК без палева
+local function startSafeAntiAFK()
+    if afkThread then task.cancel(afkThread) end
+    
+    afkThread = task.spawn(function()
+        while enabled and scriptRunning do
+            -- Ждем случайное время от 60 до 120 секунд, чтобы обмануть поведенческий античит
+            task.wait(math.random(60, 120)) 
+            
+            local character = LocalPlayer.Character
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+            
+            if humanoid and humanoid.Health > 0 then
+                -- Делаем микро-шаг вперед на 0.05 секунды
+                humanoid:Move(Vector3.new(0, 0, -1), true)
+                task.wait(0.05)
+                -- Возвращаемся обратно на то же место
+                humanoid:Move(Vector3.new(0, 0, 1), true)
+                task.wait(0.05)
+                -- Останавливаем движение
+                humanoid:Move(Vector3.new(0, 0, 0), true)
+            end
+        end
+    end)
+end
+
+-- Функция Свернуть / Развернуть
+local function toggleMenu()
+    if not scriptRunning then return end
+    local isVisible = MainFrame.Visible
+    MainFrame.Visible = not isVisible
+    MobileMenuButton.Visible = isVisible
+    TopHintLabel.Visible = isVisible
+end
+
+-- Переключатель работы Анти-АФК
+ToggleButton.MouseButton1Click:Connect(function()
+    task.spawn(function() playClickAnimation(ToggleButton) end)
+    enabled = not enabled
+    if enabled then
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(45, 185, 105)
+        startSafeAntiAFK() -- Запуск безопасного обхода
+    else
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(235, 65, 65)
+        if afkThread then task.cancel(afkThread) end
+    end
+    updateTexts()
+end)
+
+-- Эффекты наведения (Hover) для верхней панели
+CloseXButton.MouseEnter:Connect(function() CloseXButton.TextColor3 = Color3.fromRGB(255, 80, 80) end)
+CloseXButton.MouseLeave:Connect(function() CloseXButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
+LangButton.MouseEnter:Connect(function() LangButton.TextColor3 = Color3.fromRGB(240, 240, 245) end)
+LangButton.MouseLeave:Connect(function() LangButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
+
+CloseXButton.MouseButton1Click:Connect(toggleMenu)
+MobileMenuButton.MouseButton1Click:Connect(function()
+    task.spawn(function() playClickAnimation(MobileMenuButton) end)
+    toggleMenu()
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.G then
+        toggleMenu()
+    end
+end)
+
+-- Полное удаление скрипта из игры
+UnloadButton.MouseButton1Click:Connect(function()
+    playClickAnimation(UnloadButton)
+    scriptRunning = false
+    enabled = false
+    if afkThread then task.cancel(afkThread) end
+    if rgbConnection then rgbConnection:Disconnect() end
+    ScreenGui:Destroy()
+end)

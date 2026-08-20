@@ -1,49 +1,50 @@
 -- ==========================================
 -- ЧАСТЬ 1: СОЗДАНИЕ ИНТЕРФЕЙСА (UI)
 -- ==========================================
-local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
+_G.ScreenGui = Instance.new("ScreenGui")
+_G.MainFrame = Instance.new("Frame")
+_G.ToggleButton = Instance.new("TextButton")
+_G.UnloadButton = Instance.new("TextButton")
+_G.LangButton = Instance.new("TextButton")
+_G.CloseXButton = Instance.new("TextButton")
+_G.MobileMenuButton = Instance.new("TextButton")
+_G.TopHintLabel = Instance.new("TextLabel")
+
 local FrameStroke = Instance.new("UIStroke")
 local TitleLabel = Instance.new("TextLabel")
-local AuthorLabel = Instance.new("TextLabel") -- Подзаголовок by L1TEBRAY
-local ToggleButton = Instance.new("TextButton")
-local UnloadButton = Instance.new("TextButton")
-local LangButton = Instance.new("TextButton")
-local CloseXButton = Instance.new("TextButton")
+local AuthorLabel = Instance.new("TextLabel")
 local MainCorner = Instance.new("UICorner")
-
-local MobileMenuButton = Instance.new("TextButton")
 local MobileButtonCorner = Instance.new("UICorner")
 local TextButtonUIStroke = Instance.new("UIStroke")
 local ButtonGlowStroke = Instance.new("UIStroke")
-local TopHintLabel = Instance.new("TextLabel")
+local TextShadow = Instance.new("UIStroke")
 
-ScreenGui.Name = "PremiumAntiAFK_L1TEBRAY"
-ScreenGui.Parent = game:GetService("CoreGui")
-ScreenGui.ResetOnSpawn = false
+_G.ScreenGui.Name = "PremiumAntiAFK_L1TEBRAY"
+_G.ScreenGui.Parent = game:GetService("CoreGui")
+_G.ScreenGui.ResetOnSpawn = false
 
 -- Главное окно меню (Glassmorphism)
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-MainFrame.BackgroundTransparency = 0.15
-MainFrame.Position = UDim2.new(0.5, -125, 0.4, -75)
-MainFrame.Size = UDim2.new(0, 250, 0, 150)
-MainFrame.Active = true
-MainFrame.Draggable = true
-MainFrame.BorderSizePixel = 0
+_G.MainFrame.Name = "MainFrame"
+_G.MainFrame.Parent = _G.ScreenGui
+_G.MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+_G.MainFrame.BackgroundTransparency = 0.15
+_G.MainFrame.Position = UDim2.new(0.5, -125, 0.4, -75)
+_G.MainFrame.Size = UDim2.new(0, 250, 0, 150)
+_G.MainFrame.Active = true
+_G.MainFrame.Draggable = true
+_G.MainFrame.BorderSizePixel = 0
 
 MainCorner.CornerRadius = UDim.new(0, 14)
-MainCorner.Parent = MainFrame
+MainCorner.Parent = _G.MainFrame
 
-FrameStroke.Parent = MainFrame
+FrameStroke.Parent = _G.MainFrame
 FrameStroke.Color = Color3.fromRGB(60, 60, 75)
 FrameStroke.Thickness = 1.2
 FrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 -- Главный заголовок
 TitleLabel.Name = "Title"
-TitleLabel.Parent = MainFrame
+TitleLabel.Parent = _G.MainFrame
 TitleLabel.BackgroundTransparency = 1
 TitleLabel.Position = UDim2.new(0, 16, 0, 10)
 TitleLabel.Size = UDim2.new(0, 150, 0, 16)
@@ -53,9 +54,9 @@ TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 245)
 TitleLabel.TextSize = 13
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
--- Авторство (by L1TEBRAY) под заголовком
+-- Авторство (by L1TEBRAY)
 AuthorLabel.Name = "Author"
-AuthorLabel.Parent = MainFrame
+AuthorLabel.Parent = _G.MainFrame
 AuthorLabel.BackgroundTransparency = 1
 AuthorLabel.Position = UDim2.new(0, 16, 0, 24)
 AuthorLabel.Size = UDim2.new(0, 150, 0, 12)
@@ -65,107 +66,103 @@ AuthorLabel.TextColor3 = Color3.fromRGB(140, 140, 155)
 AuthorLabel.TextSize = 10
 AuthorLabel.TextXAlignment = Enum.TextXAlignment.Left
 
--- Кнопка смены языка (чистый текст EN/RU)
-LangButton.Name = "LangButton"
-LangButton.Parent = MainFrame
-LangButton.BackgroundTransparency = 1
-LangButton.Position = UDim2.new(1, -72, 0, 12)
-LangButton.Size = UDim2.new(0, 30, 0, 22)
-LangButton.Font = Enum.Font.BuilderSansBold
-LangButton.Text = "EN"
-LangButton.TextColor3 = Color3.fromRGB(140, 140, 155)
-LangButton.TextSize = 12
+-- Кнопка смены языка
+_G.LangButton.Name = "LangButton"
+_G.LangButton.Parent = _G.MainFrame
+_G.LangButton.BackgroundTransparency = 1
+_G.LangButton.Position = UDim2.new(1, -72, 0, 12)
+_G.LangButton.Size = UDim2.new(0, 30, 0, 22)
+_G.LangButton.Font = Enum.Font.BuilderSansBold
+_G.LangButton.Text = "EN"
+_G.LangButton.TextColor3 = Color3.fromRGB(140, 140, 155)
+_G.LangButton.TextSize = 12
 
--- Элегантный крестик закрытия
-CloseXButton.Name = "CloseXButton"
-CloseXButton.Parent = MainFrame
-CloseXButton.BackgroundTransparency = 1
-CloseXButton.Position = UDim2.new(1, -34, 0, 12)
-CloseXButton.Size = UDim2.new(0, 22, 0, 22)
-CloseXButton.Font = Enum.Font.BuilderSansBold
-CloseXButton.Text = "×"
-CloseXButton.TextColor3 = Color3.fromRGB(140, 140, 155)
-CloseXButton.TextSize = 20
+-- Крестик закрытия
+_G.CloseXButton.Name = "CloseXButton"
+_G.CloseXButton.Parent = _G.MainFrame
+_G.CloseXButton.BackgroundTransparency = 1
+_G.CloseXButton.Position = UDim2.new(1, -34, 0, 12)
+_G.CloseXButton.Size = UDim2.new(0, 22, 0, 22)
+_G.CloseXButton.Font = Enum.Font.BuilderSansBold
+_G.CloseXButton.Text = "×"
+_G.CloseXButton.TextColor3 = Color3.fromRGB(140, 140, 155)
+_G.CloseXButton.TextSize = 20
 
--- Кнопка Включения/Выключения Anti-AFK
-ToggleButton.Name = "ToggleButton"
-ToggleButton.Parent = MainFrame
-ToggleButton.BackgroundColor3 = Color3.fromRGB(235, 65, 65)
-ToggleButton.Position = UDim2.new(0.06, 0, 0.40, 0)
-ToggleButton.Size = UDim2.new(0.88, 0, 0, 34)
-ToggleButton.Font = Enum.Font.BuilderSansBold
-ToggleButton.Text = "Status: INACTIVE"
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.TextSize = 13
-ToggleButton.BorderSizePixel = 0
+-- Кнопка Статуса
+_G.ToggleButton.Name = "ToggleButton"
+_G.ToggleButton.Parent = _G.MainFrame
+_G.ToggleButton.BackgroundColor3 = Color3.fromRGB(235, 65, 65)
+_G.ToggleButton.Position = UDim2.new(0.06, 0, 0.40, 0)
+_G.ToggleButton.Size = UDim2.new(0.88, 0, 0, 34)
+_G.ToggleButton.Font = Enum.Font.BuilderSansBold
+_G.ToggleButton.Text = "Status: INACTIVE"
+_G.ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+_G.ToggleButton.TextSize = 13
+_G.BorderSizePixel = 0
 
 local ButtonCorner1 = Instance.new("UICorner")
 ButtonCorner1.CornerRadius = UDim.new(0, 10)
-ButtonCorner1.Parent = ToggleButton
+ButtonCorner1.Parent = _G.ToggleButton
 
--- Кнопка выгрузки чита (Unload)
-UnloadButton.Name = "UnloadButton"
-UnloadButton.Parent = MainFrame
-UnloadButton.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-UnloadButton.Position = UDim2.new(0.06, 0, 0.68, 0)
-UnloadButton.Size = UDim2.new(0.88, 0, 0, 34)
-UnloadButton.Font = Enum.Font.BuilderSansBold
-UnloadButton.Text = "Unload Script"
-UnloadButton.TextColor3 = Color3.fromRGB(170, 170, 185)
-UnloadButton.TextSize = 13
-UnloadButton.BorderSizePixel = 0
+-- Кнопка выгрузки скрипта
+_G.UnloadButton.Name = "UnloadButton"
+_G.UnloadButton.Parent = _G.MainFrame
+_G.UnloadButton.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+_G.UnloadButton.Position = UDim2.new(0.06, 0, 0.68, 0)
+_G.UnloadButton.Size = UDim2.new(0.88, 0, 0, 34)
+_G.UnloadButton.Font = Enum.Font.BuilderSansBold
+_G.UnloadButton.Text = "Unload Script"
+_G.UnloadButton.TextColor3 = Color3.fromRGB(170, 170, 185)
+_G.UnloadButton.TextSize = 13
+_G.UnloadButton.BorderSizePixel = 0
 
 local ButtonCorner2 = Instance.new("UICorner")
 ButtonCorner2.CornerRadius = UDim.new(0, 10)
-ButtonCorner2.Parent = UnloadButton
+ButtonCorner2.Parent = _G.UnloadButton
 
--- Мобильная кнопка "G" (появляется при скрытии меню)
-MobileMenuButton.Name = "MobileMenuButton"
-MobileMenuButton.Parent = ScreenGui
-MobileMenuButton.BackgroundColor3 = Color3.fromRGB(255, 195, 0)
-MobileMenuButton.Position = UDim2.new(0, 25, 1, -85)
-MobileMenuButton.Size = UDim2.new(0, 50, 0, 50)
-MobileMenuButton.Font = Enum.Font.BuilderSansBold
-MobileMenuButton.Text = "G"
-MobileMenuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-MobileMenuButton.TextSize = 26
-MobileMenuButton.Visible = false
-MobileMenuButton.BorderSizePixel = 0
+-- Мобильная кнопка "G"
+_G.MobileMenuButton.Name = "MobileMenuButton"
+_G.MobileMenuButton.Parent = _G.ScreenGui
+_G.MobileMenuButton.BackgroundColor3 = Color3.fromRGB(255, 195, 0)
+_G.MobileMenuButton.Position = UDim2.new(0, 25, 1, -85)
+_G.MobileMenuButton.Size = UDim2.new(0, 50, 0, 50)
+_G.MobileMenuButton.Font = Enum.Font.BuilderSansBold
+_G.MobileMenuButton.Text = "G"
+_G.MobileMenuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+_G.MobileMenuButton.TextSize = 26
+_G.MobileMenuButton.Visible = false
+_G.MobileMenuButton.BorderSizePixel = 0
 
-local MobileButtonCorner = Instance.new("UICorner")
 MobileButtonCorner.CornerRadius = UDim.new(1, 0)
-MobileButtonCorner.Parent = MobileMenuButton
+MobileButtonCorner.Parent = _G.MobileMenuButton
 
--- Четкий внутренний контур для буквы G
-TextButtonUIStroke.Parent = MobileMenuButton
+TextButtonUIStroke.Parent = _G.MobileMenuButton
 TextButtonUIStroke.Color = Color3.fromRGB(20, 20, 25)
 TextButtonUIStroke.Thickness = 3.5
 TextButtonUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
 
--- Граница самого желтого круга кнопки G
-ButtonGlowStroke.Parent = MobileMenuButton
+ButtonGlowStroke.Parent = _G.MobileMenuButton
 ButtonGlowStroke.Color = Color3.fromRGB(215, 155, 0)
 ButtonGlowStroke.Thickness = 1.2
 ButtonGlowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
--- Верхняя RGB-надпись подсказки
-TopHintLabel.Name = "TopHintLabel"
-TopHintLabel.Parent = ScreenGui
-TopHintLabel.BackgroundTransparency = 1
-TopHintLabel.Position = UDim2.new(0.5, -200, 0, 24)
-TopHintLabel.Size = UDim2.new(0, 400, 0, 30)
-TopHintLabel.Font = Enum.Font.BuilderSansBold
-TopHintLabel.Text = "Press G to open menu"
-TopHintLabel.TextSize = 16
-TopHintLabel.Visible = false
+-- Направляющий текст сверху
+_G.TopHintLabel.Name = "TopHintLabel"
+_G.TopHintLabel.Parent = _G.ScreenGui
+_G.TopHintLabel.BackgroundTransparency = 1
+_G.TopHintLabel.Position = UDim2.new(0.5, -200, 0, 24)
+_G.TopHintLabel.Size = UDim2.new(0, 400, 0, 30)
+_G.TopHintLabel.Font = Enum.Font.BuilderSansBold
+_G.TopHintLabel.Text = "Press G to open menu"
+_G.TopHintLabel.TextSize = 16
+_G.TopHintLabel.Visible = false
 
-local TextShadow = Instance.new("UIStroke")
-TextShadow.Parent = TopHintLabel
+TextShadow.Parent = _G.TopHintLabel
 TextShadow.Color = Color3.fromRGB(0, 0, 0)
 TextShadow.Thickness = 1.5
 TextShadow.Transparency = 0.5
 -- ==========================================
--- ЧАСТЬ 2: БЕЗОПАСНАЯ ЛОГИКА (ОБХОД АНТИЧИТА)
+-- ЧАСТЬ 2: УЛЬТИМАТИВНЫЙ ОБХОД (ПАКЕТНЫЙ МЕТОД)
 -- ==========================================
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -175,7 +172,7 @@ local LocalPlayer = Players.LocalPlayer
 local enabled = false
 local scriptRunning = true
 local currentLang = "EN"
-local afkThread = nil -- Поток для безопасного таймера
+local oldIdledConnection = nil
 
 local localization = {
     EN = {
@@ -194,16 +191,15 @@ local localization = {
 
 local function updateTexts()
     local langData = localization[currentLang]
-    UnloadButton.Text = langData.unload
-    TopHintLabel.Text = langData.hint
+    _G.UnloadButton.Text = langData.unload
+    _G.TopHintLabel.Text = langData.hint
     if enabled then
-        ToggleButton.Text = langData.statusActive
+        _G.ToggleButton.Text = langData.statusActive
     else
-        ToggleButton.Text = langData.statusInactive
+        _G.ToggleButton.Text = langData.statusInactive
     end
 end
 
--- Анимация отклика кнопок при нажатии
 local function playClickAnimation(button)
     local originalSize = button.Size
     button:TweenSize(UDim2.new(originalSize.X.Scale, originalSize.X.Offset - 6, originalSize.Y.Scale, originalSize.Y.Offset - 4), "Out", "Quad", 0.05, true)
@@ -211,82 +207,79 @@ local function playClickAnimation(button)
     button:TweenSize(originalSize, "Out", "Quad", 0.05, true)
 end
 
--- Переключение языковой панели
-LangButton.MouseButton1Click:Connect(function()
+_G.LangButton.MouseButton1Click:Connect(function()
     currentLang = (currentLang == "EN") and "RU" or "EN"
-    LangButton.Text = currentLang
+    _G.LangButton.Text = currentLang
     updateTexts()
 end)
 
--- Плавный RGB эффект текста подсказки
 local rgbConnection
 rgbConnection = RunService.RenderStepped:Connect(function()
     if not scriptRunning then rgbConnection:Disconnect() return end
-    if TopHintLabel.Visible then
+    if _G.TopHintLabel.Visible then
         local hue = (tick() % 5) / 5
-        TopHintLabel.TextColor3 = Color3.fromHSV(hue, 0.75, 1)
+        _G.TopHintLabel.TextColor3 = Color3.fromHSV(hue, 0.75, 1)
     end
 end)
 
--- СВЕРХБЕЗОПАСНЫЙ МЕТОД ОБХОДА (Имитация реального движения)
--- Скрипт раз в пару минут делает микро-шаг, что гарантированно сбрасывает АФК без палева
-local function startSafeAntiAFK()
-    if afkThread then task.cancel(afkThread) end
-    
-    afkThread = task.spawn(function()
-        while enabled and scriptRunning do
-            -- Ждем случайное время от 60 до 120 секунд, чтобы обмануть поведенческий античит
-            task.wait(math.random(60, 120)) 
-            
-            local character = LocalPlayer.Character
-            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-            
-            if humanoid and humanoid.Health > 0 then
-                -- Делаем микро-шаг вперед на 0.05 секунды
-                humanoid:Move(Vector3.new(0, 0, -1), true)
-                task.wait(0.05)
-                -- Возвращаемся обратно на то же место
-                humanoid:Move(Vector3.new(0, 0, 1), true)
-                task.wait(0.05)
-                -- Останавливаем движение
-                humanoid:Move(Vector3.new(0, 0, 0), true)
-            end
+local function setupAbsoluteBypass()
+    if oldIdledConnection then oldIdledConnection:Disconnect() end
+    oldIdledConnection = LocalPlayer.Idled:Connect(function()
+        if enabled and scriptRunning then
+            pcall(function()
+                game:GetService("VirtualUser"):Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                task.wait(0.1)
+                game:GetService("VirtualUser"):Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            end)
         end
     end)
 end
 
--- Функция Свернуть / Развернуть
+task.spawn(function()
+    while scriptRunning do
+        task.wait(10)
+        if enabled and scriptRunning then
+            pcall(function()
+                local cam = workspace.CurrentCamera
+                if cam then
+                    cam.CFrame = cam.CFrame * CFrame.Angles(0, 0, math.rad(0.0001))
+                    task.wait(0.05)
+                    cam.CFrame = cam.CFrame * CFrame.Angles(0, 0, math.rad(-0.0001))
+                end
+            end)
+        end
+    end
+end)
+
 local function toggleMenu()
     if not scriptRunning then return end
-    local isVisible = MainFrame.Visible
-    MainFrame.Visible = not isVisible
-    MobileMenuButton.Visible = isVisible
-    TopHintLabel.Visible = isVisible
+    local isVisible = _G.MainFrame.Visible
+    _G.MainFrame.Visible = not isVisible
+    _G.MobileMenuButton.Visible = isVisible
+    _G.TopHintLabel.Visible = isVisible
 end
 
--- Переключатель работы Анти-АФК
-ToggleButton.MouseButton1Click:Connect(function()
-    task.spawn(function() playClickAnimation(ToggleButton) end)
+_G.ToggleButton.MouseButton1Click:Connect(function()
+    task.spawn(function() playClickAnimation(_G.ToggleButton) end)
     enabled = not enabled
     if enabled then
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(45, 185, 105)
-        startSafeAntiAFK() -- Запуск безопасного обхода
+        _G.ToggleButton.BackgroundColor3 = Color3.fromRGB(45, 185, 105)
+        setupAbsoluteBypass()
     else
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(235, 65, 65)
-        if afkThread then task.cancel(afkThread) end
+        _G.ToggleButton.BackgroundColor3 = Color3.fromRGB(235, 65, 65)
+        if oldIdledConnection then oldIdledConnection:Disconnect() end
     end
     updateTexts()
 end)
 
--- Эффекты наведения (Hover) для верхней панели
-CloseXButton.MouseEnter:Connect(function() CloseXButton.TextColor3 = Color3.fromRGB(255, 80, 80) end)
-CloseXButton.MouseLeave:Connect(function() CloseXButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
-LangButton.MouseEnter:Connect(function() LangButton.TextColor3 = Color3.fromRGB(240, 240, 245) end)
-LangButton.MouseLeave:Connect(function() LangButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
+_G.CloseXButton.MouseEnter:Connect(function() _G.CloseXButton.TextColor3 = Color3.fromRGB(255, 80, 80) end)
+_G.CloseXButton.MouseLeave:Connect(function() _G.CloseXButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
+_G.LangButton.MouseEnter:Connect(function() _G.LangButton.TextColor3 = Color3.fromRGB(240, 240, 245) end)
+_G.LangButton.MouseLeave:Connect(function() _G.LangButton.TextColor3 = Color3.fromRGB(140, 140, 155) end)
 
-CloseXButton.MouseButton1Click:Connect(toggleMenu)
-MobileMenuButton.MouseButton1Click:Connect(function()
-    task.spawn(function() playClickAnimation(MobileMenuButton) end)
+_G.CloseXButton.MouseButton1Click:Connect(toggleMenu)
+_G.MobileMenuButton.MouseButton1Click:Connect(function()
+    task.spawn(function() playClickAnimation(_G.MobileMenuButton) end)
     toggleMenu()
 end)
 
@@ -296,12 +289,13 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 end)
 
--- Полное удаление скрипта из игры
-UnloadButton.MouseButton1Click:Connect(function()
-    playClickAnimation(UnloadButton)
+_G.UnloadButton.MouseButton1Click:Connect(function()
+    playClickAnimation(_G.UnloadButton)
     scriptRunning = false
     enabled = false
-    if afkThread then task.cancel(afkThread) end
+    if oldIdledConnection then oldIdledConnection:Disconnect() end
     if rgbConnection then rgbConnection:Disconnect() end
-    ScreenGui:Destroy()
+    _G.ScreenGui:Destroy()
+end)
+
 end)

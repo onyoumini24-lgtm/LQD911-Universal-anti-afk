@@ -297,5 +297,3 @@ _G.UnloadButton.MouseButton1Click:Connect(function()
     if rgbConnection then rgbConnection:Disconnect() end
     _G.ScreenGui:Destroy()
 end)
-
-end)

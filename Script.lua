@@ -329,7 +329,7 @@ task.spawn(function()
             end
         end
 
-        -- Специфический сканер оружия на карте для кастомных MMC-скриптов
+        -- Сканер оружия на карте
         local found = nil
         for _, obj in pairs(workspace:GetDescendants()) do
             if obj:IsA("BasePart") and (obj.Name == "GunDrop" or obj.Name == "Gun" or obj.Name == "WeaponDrop") then
@@ -405,20 +405,12 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
-    -- МОДЕРНИЗИРОВАННЫЙ ОБХОД АНТИЧЕТА MMC НА ПОДБОР ОРУЖИЯ (ФИЗИЧЕСКИЙ ТРИГГЕР)
+    -- Обход античета MMC на подбор оружия (Подсветка Gun_Highlight полностью вырезана)
     if currentDroppedGun and currentDroppedGun:IsA("BasePart") then
-        local gunHl = currentDroppedGun:FindFirstChild("Gun_Highlight") or Instance.new("Highlight", currentDroppedGun)
-        gunHl.Name = "Gun_Highlight"
-        gunHl.FillColor = Color3.fromRGB(255, 255, 255)
-        gunHl.FillTransparency = _G.L1TE_ESP and 0.1 or 1
-
         if _G.L1TE_TpGun and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             local myRoot = LocalPlayer.Character.HumanoidRootPart
-            -- Сбрасываем линейную скорость, чтобы сервер не фризил персонажа
             myRoot.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
             
-            -- Генерируем микро-шаги со смещением по оси X/Z прямо под хитбоксом пушки.
-            -- Это принудительно активируетTouch-ивент сервера MMC без лагов
             local microOscillation = Vector3.new(math.sin(tick() * 45) * 0.1, -0.1, math.cos(tick() * 45) * 0.1)
             myRoot.CFrame = currentDroppedGun.CFrame * CFrame.new(microOscillation)
         end

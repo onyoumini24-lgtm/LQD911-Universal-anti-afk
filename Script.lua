@@ -282,7 +282,7 @@ LangBtn.MouseButton1Click:Connect(function()
     end
 end)
 -- =============================================================================
--- ЧАСТЬ 3: ИСПОЛНИТЕЛЬНАЯ ЛОГИКА (ОДИН КРУГ FOV, АНТИ-ЗАЩИТА SILENT AIM, HIGHLIGHT)
+-- ЧАСТЬ 3: ИСПОЛНИТЕЛЬНАЯ ЛОГИКА (ОДИН КРУГ, АНТИЧЕТ-ОБХОД И АВТОПОДБОР ПУШКИ)
 -- =============================================================================
 
 local fovCircle = Drawing.new("Circle")
@@ -329,11 +329,20 @@ task.spawn(function()
             end
         end
 
+        -- Специфический сканер оружия на карте для кастомных MMC-скриптов
         local found = nil
-        local mainMap = workspace:FindFirstChild("Map") or workspace:FindFirstChild("CurrentMap") or workspace:FindFirstChild("Normal")
-        if mainMap then
-            local gunDrop = mainMap:FindFirstChild("GunDrop") or mainMap:FindFirstChild("Gun")
-            if gunDrop and gunDrop:IsA("BasePart") then found = gunDrop end
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("BasePart") and (obj.Name == "GunDrop" or obj.Name == "Gun" or obj.Name == "WeaponDrop") then
+                found = obj
+                break
+            end
+        end
+        if not found then
+            local mainMap = workspace:FindFirstChild("Map") or workspace:FindFirstChild("CurrentMap") or workspace:FindFirstChild("Normal")
+            if mainMap then
+                local gunDrop = mainMap:FindFirstChild("GunDrop") or mainMap:FindFirstChild("Gun")
+                if gunDrop and gunDrop:IsA("BasePart") then found = gunDrop end
+            end
         end
         currentDroppedGun = found
         task.wait(0.35)
@@ -376,7 +385,6 @@ RunService.RenderStepped:Connect(function()
         fovCircle.Visible = false
     end
 
-    -- Обычный Аимбот на правую кнопку мыши
     if _G.L1TE_Aim and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
         local target = getClosestPlayerToCenter()
         if target then
@@ -390,7 +398,6 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
-    -- АВТО-НАВЕДЕНИЕ ПРИ СТРЕЛЬБЕ (ЛКМ) ДЛЯ СРАБАТЫВАНИЯ SILENT AIM (ОБХОД СЕРВЕРА MMC)
     if _G.L1TE_Silent and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
         local target = getClosestPlayerToCenter()
         if target then
@@ -398,6 +405,7 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
+    -- МОДЕРНИЗИРОВАННЫЙ ОБХОД АНТИЧЕТА MMC НА ПОДБОР ОРУЖИЯ (ФИЗИЧЕСКИЙ ТРИГГЕР)
     if currentDroppedGun and currentDroppedGun:IsA("BasePart") then
         local gunHl = currentDroppedGun:FindFirstChild("Gun_Highlight") or Instance.new("Highlight", currentDroppedGun)
         gunHl.Name = "Gun_Highlight"
@@ -405,8 +413,14 @@ RunService.RenderStepped:Connect(function()
         gunHl.FillTransparency = _G.L1TE_ESP and 0.1 or 1
 
         if _G.L1TE_TpGun and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-            LocalPlayer.Character.HumanoidRootPart.CFrame = currentDroppedGun.CFrame + Vector3.new(0, 2, 0)
+            local myRoot = LocalPlayer.Character.HumanoidRootPart
+            -- Сбрасываем линейную скорость, чтобы сервер не фризил персонажа
+            myRoot.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            
+            -- Генерируем микро-шаги со смещением по оси X/Z прямо под хитбоксом пушки.
+            -- Это принудительно активируетTouch-ивент сервера MMC без лагов
+            local microOscillation = Vector3.new(math.sin(tick() * 45) * 0.1, -0.1, math.cos(tick() * 45) * 0.1)
+            myRoot.CFrame = currentDroppedGun.CFrame * CFrame.new(microOscillation)
         end
     end
 end)
